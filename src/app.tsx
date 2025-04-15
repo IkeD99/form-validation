@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import './index.css';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,9 +19,9 @@ const schema = z.object({
   company: z.string(),
   email: z.string().email(),
   dateOfBirth: z.object({
-    month: z.string(),
-    day: z.string(),
-    year: z.string(),
+    month: z.string().optional(),
+    day: z.string().optional(),
+    year: z.string().optional(),
   })
 })
 
@@ -46,27 +46,30 @@ export function App() {
             <div>
               <Label>First Name</Label>
               <Input className="mt-2" type="text" {...register('firstName')} />
-              <span className="text-red-500 text-xs">Input Error</span>
+              {formState.errors.firstName?.message && <span className="text-red-500 text-xs">{formState.errors.firstName?.message}</span>}
             </div>
             <div>
               <Label>Last Name</Label>
-              <Input className="mt-2" type="text" {...register('lasttName')} />
+              <Input className="mt-2" type="text" {...register('lastName')} />
+              {formState.errors.lastName?.message && <span className="text-red-500 text-xs">{formState.errors.lastName?.message}</span>}
             </div>
           </div>
           <div className='grid  grid-cols-2 gap-4'>
             <div>
               <Label>Email</Label>
               <Input className="mt-2" type="email" {...register('email')} />
+              {formState.errors.email?.message && <span className="text-red-500 text-xs">{formState.errors.email?.message}</span>}
             </div>
             <div>
               <Label>Company</Label>
               <Input className="mt-2" type="text" {...register('company')} />
+              {formState.errors.company?.message && <span className="text-red-500 text-xs">{formState.errors.company?.message}</span>}
             </div>
           </div>
           <div className='grid  grid-cols-3 gap-4 items-end'>
             <div>
               <Label>Date of Birth</Label>
-              <Select {...register('DateOfBirth.month')} >
+              <Select {...register('dateOfBirth.month')} >
                 <SelectTrigger className="w-full mt-2">
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
@@ -74,14 +77,15 @@ export function App() {
                   {Array(12).fill(1).map((_, index) => {
                     const value = String(index + 1).padStart(2, '0');
                     return (
-                      <SelectItem id={String(index)} value={value}>{value}</SelectItem>
+                      <SelectItem key={String(index)} value={value}>{value}</SelectItem>
                     )
                   })}
                 </SelectContent>
               </Select>
+              {formState.errors.dateOfBirth?.month?.message && <span className="text-red-500 text-xs">{formState.errors.dateOfBirth?.month?.message}</span>}
             </div>
             <div>
-              <Select {...register('DateOfBirth.day')}>
+              <Select {...register('dateOfBirth.day')}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Day" />
                 </SelectTrigger>
@@ -89,14 +93,15 @@ export function App() {
                   {Array(31).fill(1).map((_, index) => {
                     const value = String(index + 1).padStart(2, '0');
                     return (
-                      <SelectItem id={String(index)} value={value}>{value}</SelectItem>
+                      <SelectItem key={String(index)} value={value}>{value}</SelectItem>
                     )
                   })}
                 </SelectContent>
               </Select>
+              {formState.errors.dateOfBirth?.day?.message && <span className="text-red-500 text-xs">{formState.errors.dateOfBirth?.day?.message}</span>}
             </div>
             <div>
-              <Select {...register('DateOfBirth.year')}>
+              <Select {...register('dateOfBirth.year')}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
@@ -104,11 +109,12 @@ export function App() {
                   {Array(151).fill(1).map((_, index) => {
                     const value = String(index + 1950).padStart(4, '0');
                     return (
-                      <SelectItem id={String(index)} value={value}>{value}</SelectItem>
+                      <SelectItem key={String(index)} value={value}>{value}</SelectItem>
                     )
                   })}
                 </SelectContent>
               </Select>
+              {formState.errors.dateOfBirth?.year?.message && <span className="text-red-500 text-xs">{formState.errors.dateOfBirth?.year?.message}</span>}
             </div>
           </div>
           <Button className="mt-2" type="submit">Register</Button>
